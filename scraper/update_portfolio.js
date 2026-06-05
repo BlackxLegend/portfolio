@@ -50,9 +50,9 @@ function guessTag(caption) {
 }
 
 // Build ig-grid HTML
-function buildGrid(photos) {
+function buildGrid(photos, version) {
   return photos.map((p, i) => {
-    const imgFile = `ig_post_${i + 1}.jpg`;
+    const imgFile = `ig_post_${i + 1}.jpg?v=${version}`;
     const tag     = guessTag(p.caption);
     const caption = p.caption ? p.caption.slice(0, 80).replace(/</g,'&lt;').replace(/>/g,'&gt;') : 'View on Instagram';
     const isTall  = i === 2; // make 3rd photo span 2 rows
@@ -77,6 +77,7 @@ function buildGrid(photos) {
 
 // Patch HTML
 let html = fs.readFileSync(HTML_FILE, 'utf-8');
+const version = Date.now();
 
 // Replace ig-grid contents
 const gridStart = html.indexOf('<div class="ig-grid"');
@@ -88,7 +89,7 @@ if (gridStart === -1 || gridEnd === -1) {
 
 const before  = html.slice(0, gridStart);
 const after   = html.slice(gridEnd + '</div><!-- /ig-grid -->'.length);
-const newGrid = `<div class="ig-grid" id="igGrid" role="list" aria-label="Instagram photos">\n${buildGrid(meta.topPhotos)}\n      </div><!-- /ig-grid -->`;
+const newGrid = `<div class="ig-grid" id="igGrid" role="list" aria-label="Instagram photos">\n${buildGrid(meta.topPhotos, version)}\n      </div><!-- /ig-grid -->`;
 const newHtml = before + newGrid + after;
 
 // Also update profile stats and images
@@ -100,9 +101,9 @@ function formatCount(num) {
 
 let updated = newHtml
   // Profile stats
-  .replace(/<strong>371<\/strong><span>posts<\/span>/g, `<strong>${meta.posts.toLocaleString()}<\/strong><span>posts<\/span>`)
-  .replace(/<strong>1,001<\/strong><span>followers<\/span>/g, `<strong>${meta.followers.toLocaleString()}<\/strong><span>followers<\/span>`)
-  .replace(/<strong>643<\/strong><span>following<\/span>/g, `<strong>${meta.following.toLocaleString()}<\/strong><span>following<\/span>`)
+  .replace(/<strong>\d[\d,]*<\/strong><span>posts<\/span>/g, `<strong>${meta.posts.toLocaleString()}<\/strong><span>posts<\/span>`)
+  .replace(/<strong>\d[\d,]*<\/strong><span>followers<\/span>/g, `<strong>${meta.followers.toLocaleString()}<\/strong><span>followers<\/span>`)
+  .replace(/<strong>\d[\d,]*<\/strong><span>following<\/span>/g, `<strong>${meta.following.toLocaleString()}<\/strong><span>following<\/span>`)
   // Hero stats
   .replace(/(<span class="num-val">)\d+(<\/span>\s*<span class="num-label">Posts<\/span>)/g, `$1${meta.posts.toLocaleString()}$2`)
   .replace(/(<span class="num-val">)[^<]+(<\/span>\s*<span class="num-label">Followers<\/span>)/g, `$1${formatCount(meta.followers)}$2`)
@@ -111,13 +112,13 @@ let updated = newHtml
   // Connect tile text
   .replace(/\d[\d,]* followers · \d[\d,]* posts/g, `${meta.followers.toLocaleString()} followers · ${meta.posts.toLocaleString()} posts`)
   // Replace avatar img src tags
-  .replace(/(<img[^>]*class="avatar-img"[^>]*src=")[^"]+(")/g, '$1profile_pic.jpg$2')
-  .replace(/(src=")[^"]+("[^>]*class="avatar-img")/g, '$1profile_pic.jpg$2')
-  .replace(/(<img[^>]*class="ig-pf-img"[^>]*src=")[^"]+(")/g, '$1profile_pic.jpg$2')
-  .replace(/(src=")[^"]+("[^>]*class="ig-pf-img")/g, '$1profile_pic.jpg$2')
+  .replace(/(<img[^>]*class="avatar-img"[^>]*src=")[^"]+(")/g, `$1profile_pic.jpg?v=${version}$2`)
+  .replace(/(src=")[^"]+("[^>]*class="avatar-img")/g, `$1profile_pic.jpg?v=${version}$2`)
+  .replace(/(<img[^>]*class="ig-pf-img"[^>]*src=")[^"]+(")/g, `$1profile_pic.jpg?v=${version}$2`)
+  .replace(/(src=")[^"]+("[^>]*class="ig-pf-img")/g, `$1profile_pic.jpg?v=${version}$2`)
   // Meta tag images
-  .replace(/(<meta\s+property="og:image"\s+content=")[^"]+(")/g, '$1https://syedshefaulalam.com/profile_pic.jpg$2')
-  .replace(/(<meta\s+name="twitter:image"\s+content=")[^"]+(")/g, '$1https://syedshefaulalam.com/profile_pic.jpg$2');
+  .replace(/(<meta\s+property="og:image"\s+content=")[^"]+(")/g, `$1https://syedshefaulalam.com/profile_pic.jpg?v=${version}$2`)
+  .replace(/(<meta\s+name="twitter:image"\s+content=")[^"]+(")/g, `$1https://syedshefaulalam.com/profile_pic.jpg?v=${version}$2`);
 
 fs.writeFileSync(HTML_FILE, updated, 'utf-8');
 console.log(`\n🎉  index.html updated with ${meta.topPhotos.length} real Instagram photos!`);

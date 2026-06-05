@@ -54,6 +54,17 @@ function downloadImage(url, dest) {
   });
 }
 
+function parseCount(text) {
+  if (!text) return 0;
+  const match = text.match(/([\d,.]+)\s*([KkMm]?)/);
+  if (!match) return 0;
+  let num = parseFloat(match[1].replace(/,/g, ''));
+  const suffix = match[2].toLowerCase();
+  if (suffix === 'k') num *= 1000;
+  if (suffix === 'm') num *= 1000000;
+  return Math.round(num);
+}
+
 // ── Main ──────────────────────────────────────────────────
 async function scrapeInstagram(username) {
   const OUTPUT_DIR = path.join(__dirname, '..', 'insta_photos');
@@ -188,7 +199,11 @@ async function scrapeInstagram(username) {
           return i.src;
         });
 
-        return { profilePic: og, gridImages: [...new Set(resolved)] };
+        // Get meta description
+        const meta = document.querySelector('meta[name="description"]') || document.querySelector('meta[property="og:description"]');
+        const desc = meta ? meta.getAttribute('content') : null;
+
+        return { profilePic: og, gridImages: [...new Set(resolved)], description: desc };
       });
 
       console.log(`\n📷  Profile pic: ${fallback.profilePic ? '✅' : '❌'}`);
@@ -216,10 +231,32 @@ async function scrapeInstagram(username) {
         }
       }
 
+      // Parse stats from description fallback
+      let followers = 1001;
+      let following = 643;
+      let posts     = 371;
+
+      if (fallback.description) {
+        const parts = fallback.description.split('-');
+        const statsText = parts[0]; // e.g. "1,001 Followers, 643 Following, 371 Posts"
+        
+        const followersMatch = statsText.match(/([\d,.]+([KkMm]?))\s*Followers/i);
+        const followingMatch = statsText.match(/([\d,.]+([KkMm]?))\s*Following/i);
+        const postsMatch     = statsText.match(/([\d,.]+([KkMm]?))\s*Posts/i);
+
+        if (followersMatch) followers = parseCount(followersMatch[1]);
+        if (followingMatch) following = parseCount(followingMatch[1]);
+        if (postsMatch)     posts     = parseCount(postsMatch[1]);
+        
+        console.log(`📊  Fallback parsed stats -> Followers: ${followers} | Following: ${following} | Posts: ${posts}`);
+      } else {
+        console.log(`⚠️   Could not find description meta tag. Using default fallback stats.`);
+      }
+
       // Write minimal meta.json
       fs.writeFileSync(path.join(OUTPUT_DIR, 'meta.json'), JSON.stringify({
-        username, fullName: username, followers: 1001, following: 643,
-        posts: 371, profilePicHD: fallback.profilePic,
+        username, fullName: username, followers, following,
+        posts, profilePicHD: fallback.profilePic,
         topPhotos: Array.from({ length: downloaded }, (_, i) => ({
           index: i+1, shortcode: '', url: `https://www.instagram.com/${username}/`,
           likes: 0, comments: 0, caption: '',

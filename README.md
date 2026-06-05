@@ -41,21 +41,22 @@ d:/portfolio/
 
 ## 🚀 How to Run Locally
 
-Since the project is built using vanilla HTML, CSS, and JS, there are no compile or build steps required.
+### Method 1: Local Server with Auto-Sync (Highly Recommended)
+We have built a custom Express server that automatically triggers the Instagram scraper in the background whenever you visit or refresh the page (with a 10-minute cooldown to prevent spamming Instagram).
+1. Open your terminal in the root folder of the project.
+2. Install the server dependencies (required only once):
+   ```bash
+   npm install
+   ```
+3. Start the local server:
+   ```bash
+   npm start
+   ```
+4. Open [http://localhost:8080](http://localhost:8080) in your web browser. 
+5. Just refresh the page! The server will auto-collect new images in the background without you having to run terminal commands.
 
-### Method 1: Double-Click (Simple)
-Simply open `index.html` in any web browser.
-
-### Method 2: Live Server (Recommended)
-Running a local development server ensures smooth handling of media and prevents local file access policy warnings in some browsers.
-If you have Node.js installed, you can start a server using:
-```bash
-# Install live-server globally (if not already done)
-npm install -g live-server
-
-# Run the live-server inside the portfolio folder
-live-server
-```
+### Method 2: Double-Click (No Auto-Sync)
+Simply double-click `index.html` to open it in your browser. Note that this method will not trigger background auto-syncs.
 
 ---
 
