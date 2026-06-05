@@ -167,6 +167,7 @@ document.addEventListener('keydown', e => {
 
 /* ── Hero parallax (subtle) ───────────────────────────────── */
 window.addEventListener('scroll', () => {
+  if (window.innerWidth <= 900) return;
   const y = window.scrollY;
   const hero = document.querySelector('.hero');
   if (hero && y < window.innerHeight) {
