@@ -68,7 +68,7 @@ const io = new IntersectionObserver(entries => {
       if (a) a.classList.add('active-link');
     }
   });
-}, { threshold: 0.4 });
+}, { threshold: 0, rootMargin: '-25% 0px -70% 0px' });
 sections.forEach(s => io.observe(s));
 
 /* ── Scroll reveal ────────────────────────────────────────── */
