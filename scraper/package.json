@@ -1,0 +1,13 @@
+{
+  "name": "ig-scraper",
+  "version": "1.0.0",
+  "description": "Instagram photo scraper for portfolio",
+  "main": "scrape.js",
+  "scripts": {
+    "scrape": "node scrape.js syedshefaulalam",
+    "sync": "node scrape.js syedshefaulalam && node update_portfolio.js"
+  },
+  "dependencies": {
+    "puppeteer-core": "^24.43.1"
+  }
+}
