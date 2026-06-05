@@ -117,8 +117,8 @@ let updated = newHtml
   .replace(/(<img[^>]*class="ig-pf-img"[^>]*src=")[^"]+(")/g, `$1profile_pic.jpg?v=${version}$2`)
   .replace(/(src=")[^"]+("[^>]*class="ig-pf-img")/g, `$1profile_pic.jpg?v=${version}$2`)
   // Meta tag images
-  .replace(/(<meta\s+property="og:image"\s+content=")[^"]+(")/g, `$1https://syedshefaulalam.com/profile_pic.jpg?v=${version}$2`)
-  .replace(/(<meta\s+name="twitter:image"\s+content=")[^"]+(")/g, `$1https://syedshefaulalam.com/profile_pic.jpg?v=${version}$2`);
+  .replace(/(<meta\s+property="og:image"\s+content=")[^"]+(")/g, `$1https://ujjibito.site/profile_pic.jpg?v=${version}$2`)
+  .replace(/(<meta\s+name="twitter:image"\s+content=")[^"]+(")/g, `$1https://ujjibito.site/profile_pic.jpg?v=${version}$2`);
 
 fs.writeFileSync(HTML_FILE, updated, 'utf-8');
 console.log(`\n🎉  index.html updated with ${meta.topPhotos.length} real Instagram photos!`);

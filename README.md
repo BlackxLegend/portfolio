@@ -148,6 +148,6 @@ Render provides free hosting for static sites, and automatically redeploys whene
 ### ⚠️ Note on Domain Name SEO
 If you host this site on a custom domain or a free subdomain (e.g., `https://syed-portfolio.onrender.com`), ensure you open `index.html` and verify the canonical URL tag:
 ```html
-<link rel="canonical" href="https://syedshefaulalam.com/" />
+<link rel="canonical" href="https://ujjibito.site/" />
 ```
 Update the `href` to point to your live site domain (e.g., your `.onrender.com` address or custom domain) to maintain maximum search engine visibility and correct meta shares.
