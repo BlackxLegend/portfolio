@@ -117,20 +117,36 @@ We have pre-configured a GitHub Actions workflow that automates this entire proc
 
 This portfolio is static, meaning you can host it for free on modern static hosting platforms:
 
-### 1. GitHub Pages (Recommended for Auto-Updates)
-1. Push the contents of the `portfolio` folder (excluding `scraper/node_modules`) to a GitHub repository.
+### 1. Render (Recommended for Free Hosting with Auto-Updates)
+Render provides free hosting for static sites, and automatically redeploys whenever you push changes or when the GitHub Action updates your Instagram feed:
+1. Push the project to your GitHub account.
+2. Sign in to [Render](https://render.com/).
+3. Click the **New +** button on the dashboard and select **Static Site**.
+4. Connect your GitHub repository.
+5. In the configuration settings:
+   - **Name**: Pick a project name (e.g. `syed-shefaul-alam-portfolio`).
+   - **Branch**: `main` (or whichever branch you push to).
+   - **Build Command**: Leave this completely blank (since it's a pre-built static site).
+   - **Publish Directory**: Type `.` (representing the root directory where `index.html` is located).
+6. Click **Create Static Site**. Render will build and deploy your site to a free `*.onrender.com` subdomain!
+7. (Optional) Configure a custom domain in your Render settings if you have one.
+8. Set up **Automatic Updates** as described in the section above to let GitHub Actions update your Instagram feed and trigger Render redeployments automatically!
+
+### 2. GitHub Pages (Alternative)
+1. Push the contents of the repository to GitHub.
 2. Go to repository **Settings** -> **Pages**.
 3. Under **Build and deployment**, set the source to **Deploy from a branch** and select `main` (or `master`).
-4. (Optional) Follow the "Automatic Updates" instructions above to enable daily auto-syncing of your Instagram photos!
 
-### 2. Netlify (Easiest for quick preview)
+### 3. Netlify (Fastest Manual Deploy)
 1. Go to [Netlify App](https://app.netlify.com/).
 2. Drag and drop the `portfolio` folder directly into the deploy box.
-3. Your site is live! You can link a custom domain (e.g., `syedshefaulalam.com`) in the settings.
+3. Your site is live! You can link a custom domain in the settings.
+
+---
 
 ### ⚠️ Note on Domain Name SEO
-If you host this site on a custom domain (e.g. `https://syedshefaulalam.com/`), ensure you open `index.html` and verify the canonical URL tag:
+If you host this site on a custom domain or a free subdomain (e.g., `https://syed-portfolio.onrender.com`), ensure you open `index.html` and verify the canonical URL tag:
 ```html
 <link rel="canonical" href="https://syedshefaulalam.com/" />
 ```
-And replace it if your domain name changes to maintain maximum search engine visibility.
+Update the `href` to point to your live site domain (e.g., your `.onrender.com` address or custom domain) to maintain maximum search engine visibility and correct meta shares.
