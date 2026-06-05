@@ -32,13 +32,15 @@
 
 /* ── Reset ───────────────────────────────────────────────── */
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html, body {
+  overflow-x: hidden;
+}
 html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
 body {
   font-family: var(--sans);
   background: var(--black);
   color: var(--white);
   line-height: 1.6;
-  overflow-x: hidden;
   cursor: none;
 }
 img { display:block; max-width:100%; }
@@ -192,6 +194,7 @@ body:has(a:hover) .cursor-follower { width:50px; height:50px; border-color:rgba(
   max-width: var(--max);
   margin: 0 auto;
   position: relative;
+  overflow: hidden;
 }
 
 #grain {
@@ -995,6 +998,7 @@ body:has(a:hover) .cursor-follower { width:50px; height:50px; border-color:rgba(
   .ig-grid { grid-template-columns:repeat(3,1fr); }
   .track-row { grid-template-columns:32px 56px 1fr 36px; }
   .track-bars { display:none; }
+  .connect-tile:hover { transform: none; }
 }
 @media (max-width:620px) {
   .ig-grid { grid-template-columns:repeat(2,1fr); }
