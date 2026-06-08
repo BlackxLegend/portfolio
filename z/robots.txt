@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+
+# Disallow admin or private paths (none here, but good practice)
+Disallow: /private/
+Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://ujjibito.site/sitemap.xml
+
+# Crawl delay (optional — be kind to servers)
+Crawl-delay: 5
+
+# Allow all major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Slurp
+Allow: /

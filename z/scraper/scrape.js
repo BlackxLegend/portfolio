@@ -269,44 +269,8 @@ async function scrapeInstagram(username) {
     }
 
     // ── API success ───────────────────────────────────────
-    // Parse live stats from description meta tag to bypass cached API stats
-    let followers = profileData.followers;
-    let following = profileData.following;
-    let posts     = profileData.postsCount;
-
-    try {
-      const pageMeta = await page.evaluate(() => {
-        const meta = document.querySelector('meta[name="description"]') || document.querySelector('meta[property="og:description"]');
-        return meta ? meta.getAttribute('content') : null;
-      });
-
-      if (pageMeta) {
-        const parts = pageMeta.split('-');
-        const statsText = parts[0];
-        
-        const followersMatch = statsText.match(/([\d,.]+([KkMm]?))\s*Followers/i);
-        const followingMatch = statsText.match(/([\d,.]+([KkMm]?))\s*Following/i);
-        const postsMatch     = statsText.match(/([\d,.]+([KkMm]?))\s*Posts/i);
-
-        if (followersMatch) {
-          const parsedFollowers = parseCount(followersMatch[1]);
-          if (parsedFollowers > 0) followers = parsedFollowers;
-        }
-        if (followingMatch) {
-          const parsedFollowing = parseCount(followingMatch[1]);
-          if (parsedFollowing > 0) following = parsedFollowing;
-        }
-        if (postsMatch) {
-          const parsedPosts = parseCount(postsMatch[1]);
-          if (parsedPosts > 0) posts = parsedPosts;
-        }
-      }
-    } catch (e) {
-      console.log(`⚠️   Failed to parse page description stats: ${e.message}`);
-    }
-
     console.log(`\n✅  Profile: ${profileData.fullName}`);
-    console.log(`📊  Followers: ${followers} | Posts: ${posts}`);
+    console.log(`📊  Followers: ${profileData.followers} | Posts: ${profileData.postsCount}`);
     console.log(`📝  Bio: ${profileData.biography}`);
 
     // Sort photos-only by likes → pick top 9
@@ -324,9 +288,9 @@ async function scrapeInstagram(username) {
       username,
       fullName:  profileData.fullName,
       bio:       profileData.biography,
-      followers: followers,
-      following: following,
-      posts:     posts,
+      followers: profileData.followers,
+      following: profileData.following,
+      posts:     profileData.postsCount,
       profilePicHD: profileData.profilePicHD,
       topPhotos: sorted.slice(0, 9).map((p, i) => ({
         index: i+1, shortcode: p.shortcode,

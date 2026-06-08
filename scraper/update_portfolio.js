@@ -106,7 +106,7 @@ let updated = newHtml
   .replace(/<strong>\d[\d,]*<\/strong><span>following<\/span>/g, `<strong>${meta.following.toLocaleString()}<\/strong><span>following<\/span>`)
   // Hero stats
   .replace(/(<span class="num-val">)\d+(<\/span>\s*<span class="num-label">Posts<\/span>)/g, `$1${meta.posts.toLocaleString()}$2`)
-  .replace(/(<span class="num-val">)[^<]+(<\/span>\s*<span class="num-label">Followers<\/span>)/g, `$1${formatCount(meta.followers)}$2`)
+  .replace(/(<span class="num-val">)[^<]+(<\/span>\s*<span class="num-label">Followers<\/span>)/g, `$1${meta.followers.toLocaleString()}$2`)
   // Footer text
   .replace(/See all \d+ posts on Instagram/g, `See all ${meta.posts.toLocaleString()} posts on Instagram`)
   // Connect tile text
